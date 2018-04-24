@@ -1,0 +1,100 @@
+
+1、Collection和Collections的区别？
+答：Collection是一个接口，它是Set、List等容器的父接口；
+    Collections是个一个工具类，提供了一系列的静态方法来辅助容器操作，这些方法包括对容器的搜索、排序、线程安全化等等。
+ 
+   collections工具类常用方法有：sort（排序），binarySearch(二分查找)
+
+
+2.hibernate 延迟加载?
+   
+  延迟加载（lazy load）也叫懒加载，它是hibernate为提高程序执行效率而提供的一种机制，即只有真正使用该对象的数据时才会创建。
+      Hibernate中主要通过代理（proxy）机制来实现延迟加载的。具体过程：Hibernate从数据库获取某一个对象数据时、获取某一个对象的集合属性值时，
+   或获取某一个对象所关联的另一对象时，由于没有使用该对象的数据（除标识符值外），Hibernate并不从数据库加载真正的数据，而只是为该对象创建一个
+ 代理对象来代表这个对象，这个对象上的所有属性都为默认值；只有在真正需要使用该对象的数据时才创建这个真实对象，真正从数据库中加载它的数据。这样
+ 在某些情况下，就可以提高查询效率。
+
+      Hibernate中默认采用延迟加载的情况主要由以下几种：
+    （1）当调用Session上的load()方法加载一个实体时，会采用延迟加载。
+    （2）当Session加载某个实体时，会对这个实体中的集合属性值采用延迟加载。
+    （3）当Session加载某个实体时，会对这个实体所单端关联的另一个实体对象采用延迟加载。
+
+
+
+
+4.Eclipse优化问题
+
+
+
+(1). 修改Eclipse安装目录的eclipse.ini文件，加大JVM的非堆内存 （-XX:MaxPermSize=4096M
+								-Xms256m
+								-Xmx4096m）
+
+(2).在同一个workspace里无关的项目尽量关掉。(去除不需要加载的模块)
+
+(3). 打开eclipse后，取消在启动时自动验证项目配置文件。（windows–>perferences–>myeclipse–>validation
+　　 把 除了manual 下面的全部点掉，build下只留 classpath dependency Validator）
+
+(4). 运行最新版本的JDK和Eclipse。（通常，新版本的JDK和Eclipse都会有性能上的优化。）
+
+(5). 关闭杀毒软件
+	（如果有杀毒软件，要确保这些软件不会检查代码文件夹。将JDK、Eclipse、你的.m2/jar代码库和代码文件夹添加到杀毒软件的白名单。）
+
+(6) 禁止检查自动更新：Window --> Preferences --> Install/Update --> Automatic Updates 去掉勾选即可，如下图所示。
+
+
+(7).启动插件优化 ：
+
+	windows - preference- general - startup and shutdown 里，只保留第1、3、4，其他全部取消，保留的为：
+
+	Usage DAta Gathering Plug-in，
+
+	Equinox Provisioning Platform Automatic Updata Support，
+
+	WTP Webservice UI Plug-in
+
+(8). 尽量避免在eclipse里引入新project或多开eclipse。
+
+
+
+
+
+
+
+
+逻辑题
+	一盒蛋糕切成8份，分给8个人。要求：蛋糕盒里必须还留有一份。请问该怎么分才算公平？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	把切成的8份蛋糕先拿出7份给七个人，剩下的1份连蛋糕盒一起分给第8个人。
+
+
+
+
+
+
+
+
+
+
