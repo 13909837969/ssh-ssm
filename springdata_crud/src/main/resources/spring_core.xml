@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        ">
+        
+      
+	
+	<!-- base-package:用于扫描的包 resource-pattern:扫描的目录，默认值 **/*.calss 默认是级联，（当前包、和所有子包.) 
+		use-default-filters 默认为true @Component, @Repository, @Service, @Controller 
+		作用：Spring容器来管理这些对象（对象的创建） -->
+	<context:component-scan base-package="com.qfjy"></context:component-scan>
+	
+
+	<!-- 第一步 加载jdbc.properties -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 第二步，配置C3P0数据连接池 -->
+	<!-- 需要数据源 C3P0 -->
+	<!-- 
+	    1、实例化Bean
+	    2、调用set注入值
+	
+	 -->
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+
+		<property name="driverClass" value="${jdbc_driver}"></property>
+		<property name="jdbcUrl" value="${jdbc_url}"></property>
+		<property name="password" value="${jdbc_password}"></property>
+		<property name="user" value="${jdbc_user}"></property>
+	</bean>
+
+
+	<!-- Jpa适配器实例 -->
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
+
+  <!-- Spring+Jpa[Hibernate]整合 -->
+  
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+     <!--1、 配置JPA适配器，JPA产品：Hibernate -->
+     <property name="jpaVendorAdapter" ref="jpaVendorAdapter"></property>
+     <!-- 2、包的扫描器配置持久化类 -->
+     <property name="packagesToScan" value="com.qfjy.bean"></property>
+     <!-- 3、数据源配置DataSource -->
+     <property name="dataSource" ref="dataSource"></property>
+     <!-- 4、Jpa属性配置（Hibernate) -->
+     <property name="jpaProperties">
+     	  <props>
+     	  <!--Jpa(Hibernate)配置信息 -->
+     	  	<prop key="hibernate.show_sql">true</prop>
+     	  </props>
+     </property>
+     
+  </bean>
+
+	<!-- 对Jpa事务  数据源进行事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+	
+	
+	<!-- 声明式注解事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+   
+    
+    <!-- 
+    在 Spring 配置文件中配置 Spring Data，让 Spring 为声明的接口创建代理对象。
+    配置了 <jpa:repositories> 后，Spring 初始化容器时将会扫描 base-package  
+    指定的包目录及其子目录，为继承 Repository 或其子接口的接口创建代理对象，
+    并将代理对象注册为 Spring Bean，业务层便可以通过 Spring 自动封装的特性来直接使用该对象。
+     -->
+	<jpa:repositories base-package="com.qfjy.dao" entity-manager-factory-ref="entityManagerFactory">
+	</jpa:repositories>
+  
+</beans>

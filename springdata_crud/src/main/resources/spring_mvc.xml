@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        ">
+        
+      
+	
+	<!-- base-package:用于扫描的包 resource-pattern:扫描的目录，默认值 **/*.calss 默认是级联，（当前包、和所有子包.) 
+		use-default-filters 默认为true @Component, @Repository, @Service, @Controller 
+		作用：Spring容器来管理这些对象（对象的创建） -->
+	<context:component-scan base-package="com.qfjy"></context:component-scan>
+	
+	<!-- SpringMVC静态资源处理方案 -->
+	<!-- <mvc:default-servlet-handler/> 
+	将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler，
+	它会对进入 DispatcherServlet 的 请求进行筛查，如果发现是没有经过映射的请求，
+	就将该请求交由 WEB 应用服务器默认的 Servlet 处理，如果不是静态资源的请求，才由 DispatcherServlet 继续处理
+	 -->
+	<mvc:default-servlet-handler/>
+	<!-- 注解生效  @ResponseBody  @RequestBody  -->
+	<mvc:annotation-driven/>
+
+
+
+</beans>
